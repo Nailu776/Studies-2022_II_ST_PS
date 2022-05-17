@@ -197,7 +197,7 @@ int main(int argc, char** argv) {
       board = move(board, (x+3*y), 'X');
 
       send_turn(send_sfd, board);
-      printf("\nBoard sended: \n");
+      printf("\nBoard sent: \n");
       print_board(board);
       if (check_char_won(board, 'X')){
           printf("You won.\n");
@@ -237,7 +237,7 @@ int main(int argc, char** argv) {
       board = move(board, (x+3*y), 'O');
 
       send_turn(send_sfd, board);
-      printf("Board sended: \n");
+      printf("\nBoard sent: \n");
       print_board(board);
       if (check_char_won(board, 'O')){
           printf("You won.\n");
