@@ -11,6 +11,7 @@
 #include <string.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include <stdbool.h>
 #define ETH_P_CUSTOM 0x8888
 
 struct Board {
@@ -50,19 +51,25 @@ MyBoard reciv_turn(int sfd){
       recived_board.tab[j] = fdata[j];
   }
 
-  printf("Recived board: %s\n", fdata);
+//   printf("Recived board: %s\n", fdata);
   free(frame);
   return recived_board;
 }
 
 void print_board(MyBoard recived_board){
   int index = 0;
+  char tab[3] = {'0','1','2'};
+  printf("BOARD:\n");
+  printf("x: \t0\t1\t2\n");
+  printf("y:\n");
   for(int i = 0; i < 3; ++i){
+    printf("%c\t",tab[i]);
     for(int j = 0; j < 3; ++j){
-        printf("%c", recived_board.tab[index++]);
+        printf("%c\t", recived_board.tab[index++]);
     }
     printf("\n");
   }
+  printf("\n");
 }
 
 MyBoard init_board(MyBoard my_board){
@@ -118,32 +125,124 @@ MyBoard move(MyBoard my_board, int input, char OX){
   return my_board;
 }
 
+bool check_char_won(MyBoard my_board, char OX){
+    bool temp = false;
+    int i = 0, j = 0;
+    // X X X 
+    // _ _ _ X X X 
+    // _ _ _ _ _ _ X X X
+    for(j = 0; j < 3; ++j){
+        for(i = 0; i < 3; ++i){
+            if(my_board.tab[i+3*j] != OX){
+                temp = false; 
+                break;
+            }
+            temp = true;
+        }
+        if(temp) return temp;
+    }
+    i = 0, j = 0;
+    // X _ _ | _ X _ | _ _ X
+    // X _ _ | _ X _ | _ _ X
+    // X _ _ | _ X _ | _ _ X
+    for(j = 0; j < 3; ++j){
+        for(i = 0; i < 3; ++i){
+            if(my_board.tab[i*3+j] != OX){
+                temp = false; 
+                break;
+            }
+            temp = true;
+        }
+        if(temp) return temp;
+    }
+    // X _ _
+    // _ X _
+    // _ _ X 
+    if( my_board.tab[0] == OX && my_board.tab[4] == OX && my_board.tab[8] == OX )
+        return true;
+    // _ _ X
+    // _ X _
+    // X _ _ 
+    if( my_board.tab[2] == OX && my_board.tab[4] == OX && my_board.tab[6] == OX )
+        return true;
+    // not yet
+    return false;
+}
+
 int main(int argc, char** argv) {
   MyBoard board;
   board = init_board(board); 
+  printf("Init board: \n");
   print_board(board);
 
 
 
   int send_sfd = send_conf(argv[1],argv[2]);
   int reciv_sfd = reciv_conf(argv[1]);
-  int input;
+  int x, y;
+  bool retry = true;
   if(atoi(argv[3])==1){
     while(1){
-      scanf("%i",&input);
-      board = move(board, input, 'X');
+      while(retry){
+        printf("x: \t");
+        scanf("%i",&x);
+        printf("y: \t");
+        scanf("%i",&y);
+        if(board.tab[x+3*y] == '_')
+            retry = false;
+        else
+            printf("\nTry enter unoccupied coords.\n");
+      }
+      retry = true;
+      board = move(board, (x+3*y), 'X');
+
       send_turn(send_sfd, board);
-      board = reciv_turn(reciv_sfd);
+      printf("\nBoard sended: \n");
       print_board(board);
+      if (check_char_won(board, 'X')){
+          printf("You won.\n");
+          break;
+      }
+
+      board = reciv_turn(reciv_sfd);
+      printf("\nBoard recived: \n");
+      print_board(board);
+      if (check_char_won(board, 'O')){
+          printf("You lost.\n");
+          break;
+      }
     }
   }
   else{
     while(1){
       board = reciv_turn(reciv_sfd);
+      printf("Board recived: \n");
       print_board(board);
-      scanf("%i",&input);
-      board = move(board, input, 'O');
+      if (check_char_won(board, 'X')){
+          printf("You lost.\n");
+          break;
+      }
+
+      while(retry){
+        printf("x: \t");
+        scanf("%i",&x);
+        printf("y: \t");
+        scanf("%i",&y);
+        if(board.tab[x+3*y] == '_')
+            retry = false;
+        else
+            printf("\nTry enter unoccupied coords.\n");
+      }
+      retry = true;
+      board = move(board, (x+3*y), 'O');
+
       send_turn(send_sfd, board);
+      printf("Board sended: \n");
+      print_board(board);
+      if (check_char_won(board, 'O')){
+          printf("You won.\n");
+          break;
+      }
     }
   }
 
