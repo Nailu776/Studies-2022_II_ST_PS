@@ -59,7 +59,7 @@ MyBoard reciv_turn(int sfd){
 void print_board(MyBoard recived_board){
   int index = 0;
   char tab[3] = {'0','1','2'};
-  printf("BOARD:\n");
+//   printf("BOARD:\n");
   printf("x: \t0\t1\t2\n");
   printf("y:\n");
   for(int i = 0; i < 3; ++i){
