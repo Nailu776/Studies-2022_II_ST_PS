@@ -128,7 +128,7 @@ void first_player_ioLoop(int reciv_sfd, int send_sfd){
 }
 
 // Secound player game input-output loop
-void secound_player_ioloop(int reciv_sfd, int send_sfd){
+void secound_player_ioLoop(int reciv_sfd, int send_sfd){
     MyBoard board;
     printf("Wait for opponent.\n");
     while(true){
