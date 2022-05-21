@@ -1,0 +1,56 @@
+Todo list:
+
+    0. Przeczytac cala liste, a potem zaczac odfajkowywac punkty na niej.
+
+    1. Przeczytac caly projekt. 
+        - Jest maly to szybko pojdzie.
+
+    2. Prosze, abys go skomentowal.
+        - Chodzi mi glownie o receivera i sendera.
+        - Kod, ktory uzywalismy na zajeciach.
+        - Ale ogolnie chodzi mi o caly projekt.
+        - W szczegolnosci reciv - send.
+        - Po co? Dla uzytecznosci w przyszlosci.
+
+    3. Odpowiedziec na pytanie: Czy o to chodzilo?
+        - "5. Gra dla mobilnych bezprzewodowych sieci ad-hoc."
+        - Lab3 Gniazda sieciowe PF_PACKET - zadanie 2. 
+        uzycie polaczenia bezprzewodowego w trybie ad-hoc.
+        - Malo szczerze pamietam z tych zajec. 
+        - Zrobilem cos co dziala, ale dziala mi to na ethernecie lanie.
+        - Na wirtualkach nie sprawdze sieci bezprzewodowej.
+        - Na zajeciach trzeba bedzie przetestowac dzialanie.
+        - Ale czy o to chodzilo w ogole?
+        - Na pewno za styl (rozdrobnienie plikow) dostaniemy dodatkowe pkt.
+        - Po skomentowaniu go tez czytelnosc kodu wzrosnie.
+    
+    4. Majac pomysl poprawy - wykorzystaj go.
+        - Chwile poswiec na poprawki, jesli na jakies wpadniesz.
+        - Projekt pisalem niekoniecznie wykorzystujac najlepsze pomysly.
+        - Duzo czasu poswiecilem, by dzialal w takiej formie jak dziala teraz (wiele plikow).
+
+    5. Napisz README.md.
+        - "Do kazdego projektu nalezy dodac plik o nazwie
+        README.md, w ktorym nalezy umiescic nastepujace informacje:
+            - nazwa i opis projektu (nie wiecej niz piec zdan);
+            - zawartosc plikow zrodlowych i zasade ich kompilacji;
+            - sposob uruchomienia programu/programow projektu;"
+
+    6. Pytanie do prowadzacego:
+        - Czy tak mamy uruchamiac gre?
+        - Podawac interfejs, mac i role
+        - Czy (meczyc sie i) zrobic wyslanie swojego MAC 
+        i nasluchiwanie innych, a po odebraniu MAC,
+        jakis handshake i zaczyna sie gra?
+        - W sensie nie musielibysmy podawac MAC.
+        - Po prostu swoj interfejs i role gracza,
+        a MAC sie wydedukuje jak ktos w sieci bezprzewodowej
+        bedzie chcial dolaczyc.
+
+    7. Ost. punkt spojrz na projekt pod katem kryteriow oceny.
+        - "Kryteria oceny projektow:
+            - Poprawnosc implementacji oraz czytelnosc kodu zrodlowego.
+            - Zgodnosc funkcjonalnosci projektu z uzgodnionymi wymaganiami.
+            - Inicjatywa i pomyslowosc w realizacji projektu."
+
+    
