@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
   }
   else{
       // For secound player
-      secound_player_ioloop(reciv_sfd, send_sfd);
+      secound_player_ioLoop(reciv_sfd, send_sfd);
   }
   // Close descriptors 
   close(reciv_sfd);
