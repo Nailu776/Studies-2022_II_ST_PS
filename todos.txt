@@ -1,5 +1,8 @@
 Todo list:
 
+    -  Remis dodac. 
+    -  Poprawic check char won funkcje.
+
     0. Przeczytac cala liste, a potem zaczac odfajkowywac punkty na niej.
 
     1. Przeczytac caly projekt. 
