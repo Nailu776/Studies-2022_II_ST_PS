@@ -2,7 +2,7 @@
 #include "receiver.h"
 
 // Configure receiver - return socket descriptor
-int reciv_conf(char* in_name){
+int receive_conf(char* in_name){
   int sfd; 
   struct ifreq ifr;
   struct sockaddr_ll sall;
@@ -22,7 +22,7 @@ int reciv_conf(char* in_name){
 }
 
 // Receive next board in game
-MyBoard reciv_board(int sfd){
+MyBoard receiv_board(int sfd){
   // Prepare received frame
   char* frame;
   char* fdata;
