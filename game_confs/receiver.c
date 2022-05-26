@@ -23,7 +23,7 @@ int reciv_conf(char* in_name){
 
 // Receive next board in game
 MyBoard reciv_board(int sfd){
-  // Prepare recived frame
+  // Prepare received frame
   char* frame;
   char* fdata;
   // NOTE 819: REMEMBER TO FREE ALLOCATED FRAME!
@@ -31,7 +31,7 @@ MyBoard reciv_board(int sfd){
   memset(frame, 0, ETH_FRAME_LEN);
   // Skip eth header length
   fdata = frame + ETH_HLEN;
-  // Recive frame with ETH_P_CUSTOM
+  // receive frame with ETH_P_CUSTOM
   recvfrom(sfd, frame, ETH_FRAME_LEN, 0, NULL, NULL);
   // New board
   MyBoard received_board;

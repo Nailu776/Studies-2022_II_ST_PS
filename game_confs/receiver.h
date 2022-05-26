@@ -15,10 +15,10 @@
 #endif
 
 // Convigure receiver
-int reciv_conf(char* in_name);
+int receive_conf(char* in_name);
 
-// Recive next turn board function
-MyBoard reciv_board(int sfd);
+// receive next turn board function
+MyBoard receive_board(int sfd);
 
 #endif
 /* end of receiver.h file */

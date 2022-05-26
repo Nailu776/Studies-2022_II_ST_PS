@@ -25,10 +25,10 @@ MyBoard move(MyBoard my_board, int input, char OX);
 bool check_char_won(MyBoard my_board, char OX);
 
 // First player game input-output loop
-void first_player_ioLoop(int reciv_sfd, int send_sfd);
+void first_player_ioLoop(int receive_sfd, int send_sfd);
 
-// Secound player game input-output loop
-void secound_player_ioLoop(int reciv_sfd, int send_sfd);
+// second player game input-output loop
+void second_player_ioLoop(int receive_sfd, int send_sfd);
 
 #endif
 

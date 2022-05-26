@@ -17,13 +17,13 @@ MyBoard move(MyBoard my_board, int input, char OX){
 void print_board(MyBoard board){
   // Index in board
   int index = 0;
-  // print x possible co-ordinates
+  // print x's possible coordinates
   printf("x: \t0\t1\t2\n");
   // print y 
   char y_tab[3] = {'0','1','2'};
   printf("y:\n");
   for(int i = 0; i < 3; ++i){
-    // print y possible co-ordinates
+    // print y's possible coordinates
     printf("%c\t",y_tab[i]);
     for(int j = 0; j < 3; ++j){
         // print char from board
@@ -91,7 +91,7 @@ bool check_char_won(MyBoard my_board, char OX){
 }
 
 // First player game input-output loop
-void first_player_ioLoop(int reciv_sfd, int send_sfd){
+void first_player_ioLoop(int receive_sfd, int send_sfd){
     MyBoard board = init_board();
     printf("Init board: \n");
     print_board(board);
@@ -104,7 +104,7 @@ void first_player_ioLoop(int reciv_sfd, int send_sfd){
         if(board.tab[x+3*y] == '_')
             retry = false;
         else
-            printf("\nTry enter unoccupied/correct coords.\n");
+            printf("\nTry to enter unoccupied/correct coords.\n");
       }
       retry = true;
       board = move(board, (x+3*y), 'X');
@@ -117,8 +117,8 @@ void first_player_ioLoop(int reciv_sfd, int send_sfd){
           break;
       }
 
-      board = reciv_board(reciv_sfd);
-      printf("\nBoard recived: \n");
+      board = receive_board(receive_sfd);
+      printf("\nBoard received: \n");
       print_board(board);
       if (check_char_won(board, 'O')){
           printf("You lost.\n");
@@ -127,13 +127,13 @@ void first_player_ioLoop(int reciv_sfd, int send_sfd){
     }
 }
 
-// Secound player game input-output loop
-void secound_player_ioLoop(int reciv_sfd, int send_sfd){
+// Second player game input-output loop
+void second_player_ioLoop(int receive_sfd, int send_sfd){
     MyBoard board;
     printf("Wait for opponent.\n");
     while(true){
-      board = reciv_board(reciv_sfd);
-      printf("Board recived: \n");
+      board = receive_board(receive_sfd);
+      printf("Board received: \n");
       print_board(board);
       if (check_char_won(board, 'X')){
           printf("You lost.\n");
@@ -148,7 +148,7 @@ void secound_player_ioLoop(int reciv_sfd, int send_sfd){
         if(board.tab[x+3*y] == '_')
             retry = false;
         else
-            printf("\nTry enter unoccupied/correct coords.\n");
+            printf("\nTry to enter unoccupied/correct coords.\n");
       }
       retry = true;
       board = move(board, (x+3*y), 'O');
