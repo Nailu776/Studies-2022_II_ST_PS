@@ -130,10 +130,13 @@ void first_player_ioLoop(int receive_sfd, int send_sfd){
         scanf("%i",&x);
         printf("y: \t");
         scanf("%i",&y);
-        if(board.tab[x+3*y] == '_')
+        if(x<0 || x>2 || y<0 || y>2){
+            printf("Illegal coordinates.\n");
+            retry = true;
+        }else if(board.tab[x+3*y] == '_')
             retry = false;
         else
-            printf("\nTry to enter unoccupied/correct coords.\n");
+            printf("\nSpace occupied.\n");
       }
       retry = true;
       board = move(board, (x+3*y), 'X');
