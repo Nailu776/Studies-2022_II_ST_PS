@@ -22,7 +22,7 @@ int receive_conf(char* in_name){
 }
 
 // Receive next board in game
-MyBoard receiv_board(int sfd){
+MyBoard receive_board(int sfd){
   // Prepare received frame
   char* frame;
   char* fdata;
