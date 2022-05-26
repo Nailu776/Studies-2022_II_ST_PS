@@ -8,8 +8,8 @@
 bool retry = true;
 
 // Make move on board
-MyBoard move(MyBoard my_board, int input, char OX){
-  my_board.tab[input] = OX;
+MyBoard move(MyBoard my_board, int input, char mark){
+  my_board.tab[input] = mark;
   return my_board;
 }
 
@@ -46,21 +46,26 @@ MyBoard init_board(){
 }
 
 // Check if someone won
-bool check_char_won(MyBoard my_board, char OX){
-    bool temp = false;
+bool is_win(MyBoard my_board, char mark){
+    bool result = false;
     int i = 0, j = 0;
-    // X X X 
-    // _ _ _ X X X 
-    // _ _ _ _ _ _ X X X
+    // X X X|_ _ _|_ _ _
+    // _ _ _|X X X|_ _ _ 
+    // _ _ _|_ _ _|X X X
     for(j = 0; j < 3; ++j){
         for(i = 0; i < 3; ++i){
-            if(my_board.tab[i+3*j] != OX){
-                temp = false; 
+            //handling index out of bounds exception
+            if(i+3*j >= sizeof(my_board.tab)){
+                printf("%s\n","Index out of bounds. Terminating program.\n");
+                abort();
+            }
+            if(my_board.tab[i+3*j] != mark){
+                result = false; 
                 break;
             }
-            temp = true;
+            result = true;
         }
-        if(temp) return temp;
+        if(result) return result;
     }
     i = 0, j = 0;
     // X _ _ | _ X _ | _ _ X
@@ -68,28 +73,52 @@ bool check_char_won(MyBoard my_board, char OX){
     // X _ _ | _ X _ | _ _ X
     for(j = 0; j < 3; ++j){
         for(i = 0; i < 3; ++i){
-            if(my_board.tab[i*3+j] != OX){
-                temp = false; 
+            if(my_board.tab[i*3+j] != mark){
+                result = false; 
                 break;
             }
-            temp = true;
+            result = true;
         }
-        if(temp) return temp;
+        if(result) return result;
     }
     // X _ _
     // _ X _
     // _ _ X 
-    if( my_board.tab[0] == OX && my_board.tab[4] == OX && my_board.tab[8] == OX )
+    if( my_board.tab[0] == mark && my_board.tab[4] == mark && my_board.tab[8] == mark )
         return true;
     // _ _ X
     // _ X _
     // X _ _ 
-    if( my_board.tab[2] == OX && my_board.tab[4] == OX && my_board.tab[6] == OX )
+    if( my_board.tab[2] == mark && my_board.tab[4] == mark && my_board.tab[6] == mark )
         return true;
     // not yet
     return false;
 }
-
+// 1 - win
+// -1 - lose
+// 0 - draw
+// 2 - game still in progress
+int match_result(MyBoard my_board, char mark){
+    //win
+    if(is_win(my_board, mark) == true){
+        return 1;
+    }
+    //lose
+    if(mark == 'X'){
+        if(is_win(my_board, 'O') == true)
+            return -1;
+    }
+    else if(is_win(my_board, 'X') == true)
+            return -1;
+    //undecided
+    for(int i=0; i<9;++i){
+        if(my_board.tab[i] != 'X' && my_board.tab[i] != 'O'){
+            return 2;
+        }
+    }
+    //draw
+    return 0;    
+}
 // First player game input-output loop
 void first_player_ioLoop(int receive_sfd, int send_sfd){
     MyBoard board = init_board();
@@ -112,7 +141,7 @@ void first_player_ioLoop(int receive_sfd, int send_sfd){
       send_turn(send_sfd, board);
       printf("\nBoard sent: \n");
       print_board(board);
-      if (check_char_won(board, 'X')){
+      if (is_win(board, 'X')){
           printf("You won.\n");
           break;
       }
@@ -120,7 +149,7 @@ void first_player_ioLoop(int receive_sfd, int send_sfd){
       board = receive_board(receive_sfd);
       printf("\nBoard received: \n");
       print_board(board);
-      if (check_char_won(board, 'O')){
+      if (is_win(board, 'O')){
           printf("You lost.\n");
           break;
       }
@@ -135,7 +164,7 @@ void second_player_ioLoop(int receive_sfd, int send_sfd){
       board = receive_board(receive_sfd);
       printf("Board received: \n");
       print_board(board);
-      if (check_char_won(board, 'X')){
+      if (is_win(board, 'X')){
           printf("You lost.\n");
           break;
       }
@@ -156,7 +185,7 @@ void second_player_ioLoop(int receive_sfd, int send_sfd){
       send_turn(send_sfd, board);
       printf("\nBoard sent: \n");
       print_board(board);
-      if (check_char_won(board, 'O')){
+      if (is_win(board, 'O')){
           printf("You won.\n");
           break;
       }

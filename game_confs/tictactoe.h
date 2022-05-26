@@ -22,7 +22,10 @@ MyBoard init_board();
 MyBoard move(MyBoard my_board, int input, char OX);
 
 // Check if someone won
-bool check_char_won(MyBoard my_board, char OX);
+bool is_win(MyBoard my_board, char OX);
+
+// Match result
+int match_result(MyBoard my_board, char mark);
 
 // First player game input-output loop
 void first_player_ioLoop(int receive_sfd, int send_sfd);
