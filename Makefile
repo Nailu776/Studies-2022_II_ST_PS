@@ -1,10 +1,10 @@
 # Makefile file
 all:
-	gcc -Wall ./game_confs/tictactoe.c -c 
-	gcc -Wall ./game_confs/receiver.c -c 
-	gcc -Wall ./game_confs/sender.c -c 
-	gcc -Wall ./game.c -c 
-	gcc -Wall -o ./game ./game.o ./tictactoe.o ./receiver.o ./sender.o
+	gcc -Wall ./game_confs/tictactoe.c -c -fcommon
+	gcc -Wall ./game_confs/receiver.c -c -fcommon
+	gcc -Wall ./game_confs/sender.c -c -fcommon
+	gcc -Wall ./game.c -c -fcommon
+	gcc -Wall -o ./game ./game.o ./tictactoe.o ./receiver.o ./sender.o -fcommon
 
 clean:
 	rm game *.o 
