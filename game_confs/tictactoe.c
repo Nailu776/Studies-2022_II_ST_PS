@@ -141,16 +141,26 @@ void first_player_ioLoop(int receive_sfd, int send_sfd){
       send_turn(send_sfd, board);
       printf("\nBoard sent: \n");
       print_board(board);
-      if (is_win(board, 'X')){
-          printf("You won.\n");
+
+      if (match_result(board, 'X') == 1){
+          printf("You win!\n");
+          break;
+      }
+      else if(match_result(board, 'X') == 0){
+          printf("Stalemate!\n");
           break;
       }
 
       board = receive_board(receive_sfd);
       printf("\nBoard received: \n");
       print_board(board);
-      if (is_win(board, 'O')){
-          printf("You lost.\n");
+
+      if (match_result(board, 'X') == -1){
+          printf("You lost!\n");
+          break;
+      }
+      else if(match_result(board, 'X') == 0){
+          printf("Stalemate!\n");
           break;
       }
     }
