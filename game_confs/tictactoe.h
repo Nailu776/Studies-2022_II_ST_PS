@@ -7,6 +7,7 @@
 // Board 
 struct Board {
   char tab[9];
+  char last_mark;
 }typedef MyBoard;
 
 // Coords
@@ -19,13 +20,13 @@ void print_board(MyBoard received_board);
 MyBoard init_board();
 
 // Make move on board
-MyBoard move(MyBoard my_board, int input, char OX);
+MyBoard move(MyBoard my_board, int input, char mark);
 
 // Check if someone won
-bool is_win(MyBoard my_board, char OX);
+bool is_win(MyBoard my_board, char mark);
 
 // Match result
-int match_result(MyBoard my_board, char mark);
+bool match_result(MyBoard my_board, char mark);
 
 // First player game input-output loop
 void first_player_ioLoop(int receive_sfd, int send_sfd);

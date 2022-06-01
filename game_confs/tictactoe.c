@@ -4,11 +4,9 @@
 #include "sender.h"
 #include "receiver.h"
 
-// Try another coords
-bool retry = true;
-
 // Make move on board
 MyBoard move(MyBoard my_board, int input, char mark){
+  my_board.last_mark = mark;
   my_board.tab[input] = mark;
   return my_board;
 }
@@ -18,6 +16,7 @@ void print_board(MyBoard board){
   // Index in board
   int index = 0;
   // print x's possible coordinates
+  printf("Last move: %c\n",board.last_mark);
   printf("x: \t0\t1\t2\n");
   // print y 
   char y_tab[3] = {'0','1','2'};
@@ -41,6 +40,7 @@ MyBoard init_board(){
   for(int j = 0; j< 9; ++j){
       // "_" as blank space
       my_board.tab[j] = '_';
+      my_board.last_mark = '_';
   }
   return my_board;
 }
@@ -98,26 +98,45 @@ bool is_win(MyBoard my_board, char mark){
 // -1 - lose
 // 0 - draw
 // 2 - game still in progress
-int match_result(MyBoard my_board, char mark){
+bool match_result(MyBoard my_board, char mark){
     //win
     if(is_win(my_board, mark) == true){
-        return 1;
+        printf("You win!\n");
+        return true;
     }
     //lose
     if(mark == 'X'){
-        if(is_win(my_board, 'O') == true)
-            return -1;
+        if(is_win(my_board, 'O')){
+            printf("You lose.\n");
+            return true;
+        }
     }
-    else if(is_win(my_board, 'X') == true)
-            return -1;
-    //undecided
+    else if(is_win(my_board, 'X')){
+        printf("You lose.\n");
+        return true;
+    }
+    //game still in progress
     for(int i=0; i<9;++i){
         if(my_board.tab[i] != 'X' && my_board.tab[i] != 'O'){
-            return 2;
+            return false;
         }
     }
     //draw
-    return 0;    
+    printf("Stalemate!\n");
+    return true;
+}
+
+
+bool is_illegal(int x, int y, MyBoard board){
+    if(x<0 || x>2 || y<0 || y>2){
+        printf("Out of bound coordinates.\n");
+        return true;
+    }else if(board.tab[x+3*y] == '_')
+        return false;
+    else{
+        printf("\nSpace occupied.\n");
+        return true;
+    }
 }
 // First player game input-output loop
 void first_player_ioLoop(int receive_sfd, int send_sfd){
@@ -125,83 +144,57 @@ void first_player_ioLoop(int receive_sfd, int send_sfd){
     printf("Init board: \n");
     print_board(board);
     while(true){
-      while(retry){
-        printf("x: \t");
-        scanf("%i",&x);
-        printf("y: \t");
-        scanf("%i",&y);
-        if(x<0 || x>2 || y<0 || y>2){
-            printf("Illegal coordinates.\n");
-            retry = true;
-        }else if(board.tab[x+3*y] == '_')
-            retry = false;
-        else
-            printf("\nSpace occupied.\n");
-      }
-      retry = true;
-      board = move(board, (x+3*y), 'X');
+        do{
+            printf("x: \t");
+            scanf("%i",&x);
+            printf("y: \t");
+            scanf("%i",&y);
+        }while(is_illegal(x,y, board));
+        board = move(board, (x+3*y), 'X');
 
-      send_turn(send_sfd, board);
-      printf("\nBoard sent: \n");
-      print_board(board);
-
-      if (match_result(board, 'X') == 1){
-          printf("You win!\n");
-          break;
-      }
-      else if(match_result(board, 'X') == 0){
-          printf("Stalemate!\n");
-          break;
-      }
-
-      board = receive_board(receive_sfd);
-      printf("\nBoard received: \n");
-      print_board(board);
-
-      if (match_result(board, 'X') == -1){
-          printf("You lost!\n");
-          break;
-      }
-      else if(match_result(board, 'X') == 0){
-          printf("Stalemate!\n");
-          break;
-      }
+        send_turn(send_sfd, board);
+        printf("\nBoard sent: \n");
+        print_board(board);
+        if(match_result(board, 'X'))
+            break;
+        printf("Waiting for your turn...\n");
+        // do {
+            board = receive_board(receive_sfd);
+        // }while(board.last_mark == 'X');
+        printf("\nBoard received: \n");
+        print_board(board);
+        if(match_result(board, 'X'))
+            break;
     }
 }
 
 // Second player game input-output loop
 void second_player_ioLoop(int receive_sfd, int send_sfd){
+    
     MyBoard board;
-    printf("Wait for opponent.\n");
     while(true){
-      board = receive_board(receive_sfd);
-      printf("Board received: \n");
-      print_board(board);
-      if (is_win(board, 'X')){
-          printf("You lost.\n");
-          break;
-      }
+        printf("Waiting for your turn...\n");
+        do {
+            board = receive_board(receive_sfd);
+        }while(board.last_mark == 'O');
+        printf("\nBoard received: \n");
+        print_board(board);
+        if (match_result(board, 'O'))
+            break;
 
-      while(retry){
-        printf("x: \t");
-        scanf("%i",&x);
-        printf("y: \t");
-        scanf("%i",&y);
-        if(board.tab[x+3*y] == '_')
-            retry = false;
-        else
-            printf("\nTry to enter unoccupied/correct coords.\n");
-      }
-      retry = true;
-      board = move(board, (x+3*y), 'O');
+        do{
+            printf("x: \t");
+            scanf("%i",&x);
+            printf("y: \t");
+            scanf("%i",&y);
+        }while(is_illegal(x,y, board));
+        board = move(board, (x+3*y), 'O');
 
-      send_turn(send_sfd, board);
-      printf("\nBoard sent: \n");
-      print_board(board);
-      if (is_win(board, 'O')){
-          printf("You won.\n");
-          break;
-      }
+        send_turn(send_sfd, board);
+        printf("\nBoard sent: \n");
+        print_board(board);
+        if(match_result(board, 'O'))
+            break;
     }
 }
 
