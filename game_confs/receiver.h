@@ -15,7 +15,7 @@
 #endif
 
 // Convigure receiver
-int receive_conf(char* in_name);
+int receive_conf(char* in_name, int sfd);
 
 // receive next turn board function
 MyBoard receive_board(int sfd);

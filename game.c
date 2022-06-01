@@ -45,25 +45,30 @@
 //*/
 #define MAC_BROADCAST "FF:FF:FF:FF:FF:FF"
 
+int _connect(char* in_name){  
+  int sfd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CUSTOM));
+  receive_conf(in_name, sfd);
+  send_conf(in_name,MAC_BROADCAST, sfd);
+  return sfd;
+}
+
 int main(int argc, char** argv) {
   // Open descriptors
-  int receive_sfd = receive_conf(argv[1]);
-  int send_sfd = send_conf(argv[1],MAC_BROADCAST);
+  int sfd = _connect(argv[1]);
   // Input Output game loops
   if(strcmp(argv[2],"X") == 0){
       // For first player
-      first_player_ioLoop(receive_sfd, send_sfd);
+      first_player_ioLoop(sfd);
   }
   else if (strcmp(argv[2],"O") == 0){
       // For second player
-      second_player_ioLoop(receive_sfd, send_sfd);
+      second_player_ioLoop(sfd);
   }
   else{
       printf("Invalid argument, terminating program.\n");
   }
   // Close descriptors 
-  close(receive_sfd);
-  close(send_sfd);
+  close(sfd);
   return EXIT_SUCCESS;
 }
 

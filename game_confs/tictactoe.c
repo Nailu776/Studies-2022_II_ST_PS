@@ -139,7 +139,7 @@ bool is_illegal(int x, int y, MyBoard board){
     }
 }
 // First player game input-output loop
-void first_player_ioLoop(int receive_sfd, int send_sfd){
+void first_player_ioLoop(int sfd){
     MyBoard board = init_board();
     printf("Init board: \n");
     print_board(board);
@@ -152,14 +152,14 @@ void first_player_ioLoop(int receive_sfd, int send_sfd){
         }while(is_illegal(x,y, board));
         board = move(board, (x+3*y), 'X');
 
-        send_turn(send_sfd, board);
+        send_turn(sfd, board);
         printf("\nBoard sent: \n");
         print_board(board);
         if(match_result(board, 'X'))
             break;
         printf("Waiting for your turn...\n");
         // do {
-            board = receive_board(receive_sfd);
+            board = receive_board(sfd);
         // }while(board.last_mark == 'X');
         printf("\nBoard received: \n");
         print_board(board);
@@ -169,13 +169,13 @@ void first_player_ioLoop(int receive_sfd, int send_sfd){
 }
 
 // Second player game input-output loop
-void second_player_ioLoop(int receive_sfd, int send_sfd){
+void second_player_ioLoop(int sfd){
     
     MyBoard board;
     while(true){
         printf("Waiting for your turn...\n");
         do {
-            board = receive_board(receive_sfd);
+            board = receive_board(sfd);
         }while(board.last_mark == 'O');
         printf("\nBoard received: \n");
         print_board(board);
@@ -190,7 +190,7 @@ void second_player_ioLoop(int receive_sfd, int send_sfd){
         }while(is_illegal(x,y, board));
         board = move(board, (x+3*y), 'O');
 
-        send_turn(send_sfd, board);
+        send_turn(sfd, board);
         printf("\nBoard sent: \n");
         print_board(board);
         if(match_result(board, 'O'))

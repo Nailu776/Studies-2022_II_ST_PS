@@ -19,7 +19,7 @@ char* send_frame;
 char* send_fdata;
 
 // Configure sender
-int send_conf(char* int_name, char* dest_mac);
+int send_conf(char* int_name, char* dest_mac, int sfd);
 
 // Sending turn
 void send_turn(int sfd, MyBoard board);

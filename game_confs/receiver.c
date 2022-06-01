@@ -2,12 +2,12 @@
 #include "receiver.h"
 
 // Configure receiver - return socket descriptor
-int receive_conf(char* in_name){
-  int sfd; 
+int receive_conf(char* in_name, int sfd){
+  // int sfd; 
   struct ifreq ifr;
   struct sockaddr_ll sall;
 
-  sfd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CUSTOM));
+  // sfd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CUSTOM));
   strncpy(ifr.ifr_name, in_name, IFNAMSIZ);
   ioctl(sfd, SIOCGIFINDEX, &ifr);
   memset(&sall, 0, sizeof(struct sockaddr_ll));
