@@ -34,8 +34,13 @@ int send_conf(char* int_name, char* dest_mac){
 
 // Sending turn
 void send_turn(int sfd, MyBoard board){
-  memcpy(send_fdata, board.tab, strlen(board.tab) + 1);
-  sendto(sfd, send_frame, ETH_HLEN + strlen(board.tab) + 1, 0,
+  // memcpy(send_fdata, board.tab, strlen(board.tab));
+  // memcpy(mark, board.last_mark, strlen(board.last_mark) + 1);
+  for(int i=0;i<9;++i){
+    send_fdata[i] = board.tab[i];
+  }
+  send_fdata[9] = board.last_mark;
+  sendto(sfd, send_frame, ETH_HLEN + strlen(board.tab) + 1  +1, 0,
          (struct sockaddr*) &send_sall, sizeof(struct sockaddr_ll));
 }
 /* end of sender.c file */

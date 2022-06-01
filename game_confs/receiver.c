@@ -37,7 +37,10 @@ MyBoard receive_board(int sfd){
   MyBoard received_board;
   // Copy board from frame data
   for(int j = 0; j< strlen(fdata); j++){
-      received_board.tab[j] = fdata[j];
+      if(j == 9)
+        received_board.last_mark = fdata[j];
+      else
+        received_board.tab[j] = fdata[j];
   }
   // NOTE 819: free alocated memory
   free(frame);
