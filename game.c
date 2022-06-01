@@ -8,7 +8,7 @@
  * else you are second no matter what input you enter.
  * 
  * Compilation: make
- * Usage:       ./game INTERFACE_NAME DEST_MAC_ADDR PLAYER 
+ * Usage:       ./game INTERFACE_NAME PLAYER 
  * NOTE:        This program requires root privileges.
 */
 
@@ -43,19 +43,23 @@
 
   //   int send_sfd = receive_inv(argv[1], receive_sfd);
 //*/
+#define MAC_BROADCAST "FF:FF:FF:FF:FF:FF"
 
 int main(int argc, char** argv) {
   // Open descriptors
   int receive_sfd = receive_conf(argv[1]);
-  int send_sfd = send_conf(argv[1],argv[2]);
+  int send_sfd = send_conf(argv[1],MAC_BROADCAST);
   // Input Output game loops
-  if(strcmp(argv[3],"X") == 0){
+  if(strcmp(argv[2],"X") == 0){
       // For first player
       first_player_ioLoop(receive_sfd, send_sfd);
   }
-  else{
+  else if (strcmp(argv[2],"O") == 0){
       // For second player
       second_player_ioLoop(receive_sfd, send_sfd);
+  }
+  else{
+      printf("Invalid argument, terminating program.\n");
   }
   // Close descriptors 
   close(receive_sfd);
