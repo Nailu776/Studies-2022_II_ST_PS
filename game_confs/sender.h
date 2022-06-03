@@ -21,6 +21,12 @@ char* send_fdata;
 // Configure sender
 int send_conf(char* int_name, char* dest_mac, int sfd);
 
+//Send your mark
+void send_mark(int sfd, char* mark);
+
+//Send starting signal
+void send_start(int sfd);
+
 // Sending turn
 void send_turn(int sfd, MyBoard board);
 

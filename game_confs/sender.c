@@ -32,15 +32,40 @@ int send_conf(char* int_name, char* dest_mac, int sfd){
   return sfd;
 }
 
+//Sending game Start
+void send_mark(int sfd, char* mark){
+  //message containg X or O
+  int message_len = 1;
+  //loading message
+  send_fdata = mark;
+  //sending frame; 
+  sendto(sfd, send_frame, ETH_HLEN + message_len + 1, 0,
+         (struct sockaddr*) &send_sall, sizeof(struct sockaddr_ll));
+}
+
+//Sending game Start
+void send_start(int sfd){
+  //message containg the word "START"
+  int message_len = 5;
+  //loading start message
+  send_fdata = "START";
+  //sending frame; 
+  sendto(sfd, send_frame, ETH_HLEN + message_len + 1, 0,
+         (struct sockaddr*) &send_sall, sizeof(struct sockaddr_ll));
+}
+
 // Sending turn
 void send_turn(int sfd, MyBoard board){
-  // memcpy(send_fdata, board.tab, strlen(board.tab));
-  // memcpy(mark, board.last_mark, strlen(board.last_mark) + 1);
+  //message containg 9 fields and a mark
+  int message_len = 10;
+  //loading all 9 fields on the board
   for(int i=0;i<9;++i){
     send_fdata[i] = board.tab[i];
   }
+  //loading last mark put on the board
   send_fdata[9] = board.last_mark;
-  sendto(sfd, send_frame, ETH_HLEN + strlen(board.tab) + 1  +1, 0,
+  //sending frame; 
+  sendto(sfd, send_frame, ETH_HLEN + message_len + 1, 0,
          (struct sockaddr*) &send_sall, sizeof(struct sockaddr_ll));
 }
 /* end of sender.c file */

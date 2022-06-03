@@ -2,18 +2,19 @@
  * game.c file
  * 2022 JH139940 SK139959
  *
- * PLAYER:      X or O 
- * NOTE:        Player is written in capital letters.
- * If you enter X you get first player mode,
- * else you are second no matter what input you enter.
+ * OPTION:      JOIN or START 
+ * NOTE:        OPTION is written in capital letters.
+ * If you enter START you create a new game and have to wait for another player,
+ * JOIN means that you want to join an existing game and if there is a player waiting, the game begins.
  * 
  * Compilation: make
- * Usage:       ./game INTERFACE_NAME PLAYER 
+ * Usage:       ./game INTERFACE_NAME OPTION 
  * NOTE:        This program requires root privileges.
 */
 
 // Included libs
 #include <unistd.h>
+#include <time.h>
 #include "./game_confs/tictactoe.h"
 #include "./game_confs/receiver.h"
 #include "./game_confs/sender.h"
@@ -45,30 +46,55 @@
 //*/
 #define MAC_BROADCAST "FF:FF:FF:FF:FF:FF"
 
-int _connect(char* in_name){  
+void player_loop(int sfd, bool decision){
+  if(decision){
+    printf("Yourmark: X\n");
+    send_mark(sfd,"X");
+    X_player_ioLoop(sfd);
+  }
+  else{
+    printf("Yourmark: O\n");
+    send_mark(sfd,"O");
+    O_player_ioLoop(sfd);
+  }
+}
+
+void _connect(char* if_name, char* option){  
+  //Creating socket descriptor
   int sfd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CUSTOM));
-  receive_conf(in_name, sfd);
-  send_conf(in_name,MAC_BROADCAST, sfd);
-  return sfd;
+  //Configuring receiver
+  receive_conf(if_name, sfd);
+  //Configuring sender
+  send_conf(if_name, MAC_BROADCAST, sfd);
+  //JOIN or START the game
+  if(strcmp(option,"START") == 0){
+    printf("Waiting for another player to join the game.\n");
+    if(receive_start(sfd)){
+      printf("The game is about to start.\n");
+      // Choosing mark by random
+      srand(time(0));
+      // Choosing player loop
+      player_loop(sfd, rand() % 2);
+    }
+    else{
+      printf("Didn't receive a correct start signal, terminating.");
+      exit(0);
+    }
+  } else if(strcmp(option,"JOIN") == 0){
+    printf("Joining the game...\n");
+    //sending join message
+    send_start(sfd);
+    //Receiveing your mark and choosing player loop
+    player_loop(sfd, strcmp(receive_mark(sfd), "X") == 0)
+  }
+  else{
+    printf("Incorrect OPTION, terminating.\n");
+    exit(0);
+  }
 }
 
 int main(int argc, char** argv) {
-  // Open descriptors
-  int sfd = _connect(argv[1]);
-  // Input Output game loops
-  if(strcmp(argv[2],"X") == 0){
-      // For first player
-      first_player_ioLoop(sfd);
-  }
-  else if (strcmp(argv[2],"O") == 0){
-      // For second player
-      second_player_ioLoop(sfd);
-  }
-  else{
-      printf("Invalid argument, terminating program.\n");
-  }
-  // Close descriptors 
-  close(sfd);
+  _connect(argv[1],argv[2]);
   return EXIT_SUCCESS;
 }
 

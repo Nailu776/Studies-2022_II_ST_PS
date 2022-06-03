@@ -17,6 +17,12 @@
 // Convigure receiver
 int receive_conf(char* in_name, int sfd);
 
+//Receive your mark
+char* receive_mark(int sfd);
+
+//Receive starting signal
+bool receive_start(int sfd);
+
 // receive next turn board function
 MyBoard receive_board(int sfd);
 

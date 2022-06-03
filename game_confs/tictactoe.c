@@ -138,8 +138,8 @@ bool is_illegal(int x, int y, MyBoard board){
         return true;
     }
 }
-// First player game input-output loop
-void first_player_ioLoop(int sfd){
+// X player game input-output loop
+void X_player_ioLoop(int sfd){
     MyBoard board = init_board();
     printf("Init board: \n");
     print_board(board);
@@ -158,9 +158,7 @@ void first_player_ioLoop(int sfd){
         if(match_result(board, 'X'))
             break;
         printf("Waiting for your turn...\n");
-        // do {
-            board = receive_board(sfd);
-        // }while(board.last_mark == 'X');
+        board = receive_board(sfd);
         printf("\nBoard received: \n");
         print_board(board);
         if(match_result(board, 'X'))
@@ -168,8 +166,8 @@ void first_player_ioLoop(int sfd){
     }
 }
 
-// Second player game input-output loop
-void second_player_ioLoop(int sfd){
+// O player game input-output loop
+void O_player_ioLoop(int sfd){
     
     MyBoard board;
     while(true){

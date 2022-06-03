@@ -28,11 +28,11 @@ bool is_win(MyBoard my_board, char mark);
 // Match result
 bool match_result(MyBoard my_board, char mark);
 
-// First player game input-output loop
-void first_player_ioLoop(int sfd);
+// X player game input-output loop
+void X_player_ioLoop(int sfd);
 
-// second player game input-output loop
-void second_player_ioLoop(int sfd);
+// O player game input-output loop
+void O_player_ioLoop(int sfd);
 
 #endif
 

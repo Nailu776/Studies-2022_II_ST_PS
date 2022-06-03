@@ -21,6 +21,41 @@ int receive_conf(char* in_name, int sfd){
   return sfd;
 }
 
+char* receive_mark(int sfd){
+  char* mark;
+  char* frame;
+  char* fdata;
+  // NOTE 819: REMEMBER TO FREE ALLOCATED FRAME!
+  frame = malloc(ETH_FRAME_LEN);
+  memset(frame, 0, ETH_FRAME_LEN);
+  // Skip eth header length
+  fdata = frame + ETH_HLEN;
+  // receive frame with ETH_P_CUSTOM
+  recvfrom(sfd, frame, ETH_FRAME_LEN, 0, NULL, NULL);
+  mark = fdata;
+  // NOTE 819: free alocated memory
+  free(frame);
+  return mark;
+}
+
+bool receive_start(int sfd){
+  bool success;
+  char* frame;
+  char* fdata;
+  // NOTE 819: REMEMBER TO FREE ALLOCATED FRAME!
+  frame = malloc(ETH_FRAME_LEN);
+  memset(frame, 0, ETH_FRAME_LEN);
+  // Skip eth header length
+  fdata = frame + ETH_HLEN;
+  // receive frame with ETH_P_CUSTOM
+  recvfrom(sfd, frame, ETH_FRAME_LEN, 0, NULL, NULL);
+  if(strcmp(fdata,"START") == 0) success = true;
+  else success = false;
+  // NOTE 819: free alocated memory
+  free(frame);
+  return success;
+}
+
 // Receive next board in game
 MyBoard receive_board(int sfd){
   // Prepare received frame
