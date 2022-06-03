@@ -85,7 +85,8 @@ void _connect(char* if_name, char* option){
     //sending join message
     send_start(sfd);
     //Receiveing your mark and choosing player loop
-    player_loop(sfd, strcmp(receive_mark(sfd), "X") == 0)
+    player_loop(sfd, strcmp(receive_mark(sfd), "X") == 0);
+    
   }
   else{
     printf("Incorrect OPTION, terminating.\n");
