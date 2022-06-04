@@ -48,5 +48,5 @@ Skompilowany program uruchamia się nastepujacym poleceniem:
 ```
 sudo ./game INTERFACE_NAME  
 ```
-Argument INTERFACE_NAME jest numerem używanego interfejsu sieciowego.  
+Argument INTERFACE_NAME jest nazwą używanego interfejsu sieciowego.  
 Program wymaga uprawnień roota.
