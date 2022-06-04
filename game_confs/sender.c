@@ -37,7 +37,7 @@ void send_mark(int sfd, char* mark){
   //message containg X or O
   int message_len = 1;
   //loading message
-  send_fdata = mark;
+  memcpy(send_fdata, mark, strlen(mark) + 1);
   //sending frame; 
   sendto(sfd, send_frame, ETH_HLEN + message_len + 1, 0,
          (struct sockaddr*) &send_sall, sizeof(struct sockaddr_ll));
@@ -46,11 +46,11 @@ void send_mark(int sfd, char* mark){
 //Sending game Start
 void send_start(int sfd){
   //message containg the word "START"
-  int message_len = 5;
-  //loading start message
-  send_fdata = "START";
+  char* start_msg = "START";
+  //loading start message 
+  memcpy(send_fdata, start_msg, strlen(start_msg) + 1);
   //sending frame; 
-  sendto(sfd, send_frame, ETH_HLEN + message_len + 1, 0,
+  sendto(sfd, send_frame, ETH_HLEN + strlen(start_msg) + 1, 0,
          (struct sockaddr*) &send_sall, sizeof(struct sockaddr_ll));
 }
 
@@ -59,11 +59,9 @@ void send_turn(int sfd, MyBoard board){
   //message containg 9 fields and a mark
   int message_len = 10;
   //loading all 9 fields on the board
-  for(int i=0;i<9;++i){
-    send_fdata[i] = board.tab[i];
-  }
+  memcpy(send_fdata, board.tab, strlen(board.tab));
   //loading last mark put on the board
-  send_fdata[9] = board.last_mark;
+  memcpy(send_fdata+9, &(board.last_mark), 1);
   //sending frame; 
   sendto(sfd, send_frame, ETH_HLEN + message_len + 1, 0,
          (struct sockaddr*) &send_sall, sizeof(struct sockaddr_ll));

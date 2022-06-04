@@ -158,7 +158,9 @@ void X_player_ioLoop(int sfd){
         if(match_result(board, 'X'))
             break;
         printf("Waiting for your turn...\n");
+        // do {
         board = receive_board(sfd);
+        // }while(board.last_mark == 'X');
         printf("\nBoard received: \n");
         print_board(board);
         if(match_result(board, 'X'))
@@ -172,9 +174,9 @@ void O_player_ioLoop(int sfd){
     MyBoard board;
     while(true){
         printf("Waiting for your turn...\n");
-        do {
+        // do {
             board = receive_board(sfd);
-        }while(board.last_mark == 'O');
+        // }while(board.last_mark == 'O');
         printf("\nBoard received: \n");
         print_board(board);
         if (match_result(board, 'O'))

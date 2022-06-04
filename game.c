@@ -49,12 +49,12 @@
 void player_loop(int sfd, bool decision){
   if(decision){
     printf("Yourmark: X\n");
-    send_mark(sfd,"X");
+    send_mark(sfd,"O");
     X_player_ioLoop(sfd);
   }
   else{
     printf("Yourmark: O\n");
-    send_mark(sfd,"O");
+    send_mark(sfd,"X");
     O_player_ioLoop(sfd);
   }
 }
