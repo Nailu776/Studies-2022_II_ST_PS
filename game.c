@@ -2,13 +2,8 @@
  * game.c file
  * 2022 JH139940 SK139959
  *
- * OPTION:      JOIN or START 
- * NOTE:        OPTION is written in capital letters.
- * If you enter START you create a new game and have to wait for another player,
- * JOIN means that you want to join an existing game and if there is a player waiting, the game begins.
- * 
  * Compilation: make
- * Usage:       ./game INTERFACE_NAME OPTION 
+ * Usage:       ./game INTERFACE_NAME  
  * NOTE:        This program requires root privileges.
 */
 
@@ -20,6 +15,17 @@
 #include "./game_confs/sender.h"
 
 #define MAC_BROADCAST "FF:FF:FF:FF:FF:FF"
+
+// Wait untill readable or timed out
+int readable(int fd, int tout) {
+  fd_set rset;
+  struct timeval tv;
+  FD_ZERO(&rset);
+  FD_SET(fd, &rset);
+  tv.tv_sec = tout;
+  tv.tv_usec = 0;
+  return select(fd + 1, &rset, NULL, NULL, &tv);
+}
 
 void player_loop(int sfd, bool decision){
   if(decision){
@@ -34,15 +40,24 @@ void player_loop(int sfd, bool decision){
   }
 }
 
-void _connect(char* if_name, char* option){  
-  //Creating socket descriptor
+void _connect(char* if_name){  
+  // Creating socket descriptor
   int sfd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CUSTOM));
-  //Configuring receiver
+  // Configuring receiver
   receive_conf(if_name, sfd);
-  //Configuring sender
+  // Configuring sender
   send_conf(if_name, MAC_BROADCAST, sfd);
-  //JOIN or START the game
-  if(strcmp(option,"START") == 0){
+  // JOIN or START the game
+  printf("Trying to join the game...\n");
+  // Sending join message
+  send_start(sfd);
+  // Trying to receive mark for 10 sec
+  if (readable(sfd, 10) > 0){
+    // Receiveing your mark and choosing player loop
+    player_loop(sfd, strcmp(receive_mark(sfd), "X") == 0);
+  }  else{
+    printf("Nobody is waiting for another player...\n");
+    printf("Trying to start new game...\n");
     printf("Waiting for another player to join the game.\n");
     if(receive_start(sfd)){
       printf("The game is about to start.\n");
@@ -55,22 +70,11 @@ void _connect(char* if_name, char* option){
       printf("Didn't receive a correct start signal, terminating.");
       exit(0);
     }
-  } else if(strcmp(option,"JOIN") == 0){
-    printf("Joining the game...\n");
-    //sending join message
-    send_start(sfd);
-    //Receiveing your mark and choosing player loop
-    player_loop(sfd, strcmp(receive_mark(sfd), "X") == 0);
-    
-  }
-  else{
-    printf("Incorrect OPTION, terminating.\n");
-    exit(0);
   }
 }
 
 int main(int argc, char** argv) {
-  _connect(argv[1],argv[2]);
+  _connect(argv[1]);
   return EXIT_SUCCESS;
 }
 

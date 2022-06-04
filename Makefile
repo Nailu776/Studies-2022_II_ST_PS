@@ -14,13 +14,13 @@ clean:
 
 # P1:
 # make
-# sudo ./game enp0s8 08:00:27:2a:77:6f X
+# sudo ./game enp0s8
 # *playing*
 # make clean
 
 # P2:
 # make
-# sudo ./game enp0s8 08:00:27:44:b9:60 O
+# sudo ./game enp0s8
 # *playing*
 # make clean
 
