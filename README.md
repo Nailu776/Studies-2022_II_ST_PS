@@ -35,8 +35,7 @@ gcc -Wall ./game_confs/sender.c -c -fcommon
 
 *game.c*  
 Plik game.c jest plikiem główym programu.  
-Inicjowane jest w nim gniazdo komunikacji,  
-wybór graczy oraz pętle graczy.
+Inicjowane jest w nim gniazdo komunikacji, wybór graczy oraz pętle graczy.  
 Kompilacja:  
 ```
 gcc -Wall ./game.c -c -fcommon  
@@ -49,5 +48,5 @@ Skompilowany program uruchamia się nastepujacym poleceniem:
 ```
 sudo ./game INTERFACE_NAME  
 ```
-Argument INTERFACE_NAME jest numerem używanego interfejsu sieciowego.
+Argument INTERFACE_NAME jest numerem używanego interfejsu sieciowego.  
 Program wymaga uprawnień roota.
