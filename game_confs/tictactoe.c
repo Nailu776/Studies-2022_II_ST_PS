@@ -1,4 +1,9 @@
-/* tictactoe.c file */
+/*
+ * tictactoe.c file
+ * 2022 JH139940 SK139959
+ * Compilation: make
+*/
+
 #include "tictactoe.h"
 
 #include "sender.h"

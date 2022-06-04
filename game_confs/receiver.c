@@ -1,4 +1,9 @@
-/* receiver.c file */
+/* 
+ * receiver.c file 
+ * 2022 JH139940 SK139959
+ * Compilation: make
+*/
+
 #include "receiver.h"
 
 // Configure receiver - return socket descriptor

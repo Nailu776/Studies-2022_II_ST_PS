@@ -1,4 +1,9 @@
-/* tictactoe.h */
+/* 
+ * tictactoe.h 
+ * 2022 JH139940 SK139959
+ * Compilation: make
+*/
+
 #ifndef TICTACTOE_H
 #define TICTACTOE_H
 #include <stdio.h>

@@ -1,4 +1,9 @@
-/* receiver.h */
+/* 
+ * receiver.h
+ * 2022 JH139940 SK139959
+ * Compilation: make
+*/
+
 #ifndef RECEIVER_H
 // Define once
 #define RECEIVER_H

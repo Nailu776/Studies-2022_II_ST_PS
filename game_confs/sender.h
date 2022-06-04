@@ -1,4 +1,9 @@
-/* sender.h file */
+/* 
+ * sender.h file
+ * 2022 JH139940 SK139959
+ * Compilation: make
+*/
+
 #ifndef SENDER_H
 // Define once
 #define SENDER_H

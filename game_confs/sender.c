@@ -1,4 +1,8 @@
-/* sender.c file */
+/* 
+ * sender.c file 
+ * 2022 JH139940 SK139959
+ * Compilation: make
+*/
 #include "sender.h"
 
 // Configure sender
