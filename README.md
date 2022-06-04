@@ -1,5 +1,5 @@
 # 2022_II_ST_PS  
-Repozytorium github przeznaczone na przedmiot Programowanie Sieciowe (PS) na drugim stopniu studiów.
+Repozytorium przeznaczone na przedmiot Programowanie Sieciowe (PS) na drugim stopniu studiów.
 
 ## Opis projektu  
 Gra dla mobilnych bezprzewodowych sieci ad-hoc.  
@@ -13,21 +13,21 @@ Znak X oznacza gracza pierwszego, który zawsze zaczyna rozgrywkę, a znak O gra
 ## Pliki źródłowe  
 
 *tictactoe*  
-Pliki tictactoe odpowiedzialne są za implementację zasad gry, wyświetlanie plansz oraz ruchy graczy.  
+Pliki tictactoe.* odpowiedzialne są za implementację zasad gry, wyświetlanie plansz oraz ruchy graczy.  
 Kompilacja:  
 ```
 gcc -Wall ./game_confs/tictactoe.c -c -fcommon  
 ```  
 
 *receiver*  
-Pliki receiver zawierają ustawienia gniazda dotyczące odbierania ramek oraz interpretowania ich zawratości.  
+Pliki receiver.* zawierają ustawienia gniazda dotyczące odbierania ramek oraz interpretowania ich zawratości.  
 Kompilacja:  
 ``` 
 gcc -Wall ./game_confs/receiver.c -c -fcommon  
 ```  
 
 *sender*  
-Pliki sender zawierają ustawienia gniazda dotyczące wysyłania ramek oraz budowania ich.  
+Pliki sender.* zawierają ustawienia gniazda dotyczące wysyłania ramek oraz budowania ich.  
 Kompilacja:  
 ```
 gcc -Wall ./game_confs/sender.c -c -fcommon  
@@ -35,7 +35,7 @@ gcc -Wall ./game_confs/sender.c -c -fcommon
 
 *game.c*  
 Plik game.c jest plikiem główym programu.  
-Inicjowane jest w nim gniazdo komunikacji, wybór graczy oraz pętle graczy.  
+Inicjowane jest w nim gniazdo komunikacji, wybór roli graczy oraz pętle zdarzeń wejścia/wyjścia dla graczy.  
 Kompilacja:  
 ```
 gcc -Wall ./game.c -c -fcommon  
