@@ -7,7 +7,6 @@ int send_conf(char* int_name, char* dest_mac, int sfd){
   struct ethhdr* fhead;
   struct ifreq ifr;
 
-  // sfd = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CUSTOM));
   send_frame = malloc(ETH_FRAME_LEN);
   memset(send_frame, 0, ETH_FRAME_LEN);
   fhead = (struct ethhdr*) send_frame;
