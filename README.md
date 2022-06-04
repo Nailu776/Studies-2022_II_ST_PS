@@ -3,50 +3,51 @@ Repozytorium github przeznaczone na przedmiot Programowanie Sieciowe (PS) na dru
 
 ## Opis projektu  
 Gra dla mobilnych bezprzewodowych sieci ad-hoc.  
-Gra Kolko i krzyzyk polegajaca na turowym wysylaniu miedzy graczami planszy z wykonanym ruchem.  
-Po uruchomieniu gry nastepuje proba dolaczenia do istniejacej rozgrywki,
-a po 10 sekundach od braku odpowiedzi startuje nowa gra i oczekiwanie na drugiego gracza.  
-Gracze nie musza znac swoich adresow, musza jedynie znajdowac sie w tej samej sieci, gdyz plansza jest wysylana rozgloszeniowo.  
-Po dolaczeniu do rozgrywki, losowane sa znaki, ktorym beda poslugiwac sie gracze - X zawsze zaczyna pierwszy.  
+Gra Kółko i krzyżyk polegająca na turowym wysyłaniu między graczami planszy z wykonanym ruchem.  
+Po uruchomieniu gry następuje próba dołączenia do istniejącej rozgrywki,
+a po 10 sekundach od braku odpowiedzi startuje nowa rozgrywka i następuje oczekiwanie na drugiego gracza.  
+Gracze nie muszą znać swoich adresów, muszą jedynie znajdowac się w tej samej sieci, gdyż plansza jest wysyłana rozgłoszeniowo.  
+Po dołączeniu do rozgrywki, losowane są znaki, którymi będą posługiwac się gracze.  
+Znak X oznacza gracza pierwszego, który zawsze zaczyna rozgrywkę, a znak O gracza drugiego.  
 
-## Pliki zrodlowe  
+## Pliki źródłowe  
 
 *tictactoe*  
-Pliki tictactoe odpowiedzialne sa za implementacje zasad gry, wyswietlanie plansz oraz ruchy graczy.  
+Pliki tictactoe odpowiedzialne są za implementację zasad gry, wyświetlanie plansz oraz ruchy graczy.  
 Kompilacja:  
 ```
 gcc -Wall ./game_confs/tictactoe.c -c -fcommon  
 ```  
 
 *receiver*  
-Pliki receiver zawieraja ustawienia gniazda dotyczace odbierania ramek oraz interpretowania ich zawratosci.  
+Pliki receiver zawierają ustawienia gniazda dotyczące odbierania ramek oraz interpretowania ich zawratości.  
 Kompilacja:  
 ``` 
 gcc -Wall ./game_confs/receiver.c -c -fcommon  
 ```  
 
 *sender*  
-Pliki sender zawieraja ustawienia gniazda dotyczace wysylania ramek oraz budowania ich.  
+Pliki sender zawierają ustawienia gniazda dotyczące wysyłania ramek oraz budowania ich.  
 Kompilacja:  
 ```
 gcc -Wall ./game_confs/sender.c -c -fcommon  
 ```  
 
 *game.c*  
-Plik game.c jest plikiem glowym programu.  
+Plik game.c jest plikiem główym programu.  
 Inicjowane jest w nim gniazdo komunikacji,  
-wybor graczy oraz petle graczy.
+wybór graczy oraz pętle graczy.
 Kompilacja:  
 ```
 gcc -Wall ./game.c -c -fcommon  
 gcc -Wall -o ./game ./game.o ./tictactoe.o ./receiver.o ./sender.o -fcommon  
 ```  
 
-## Sposob uruchomienia
-Projekt kompiluje sie poleceniem 'make' dzieki przygotowanemu pliku Makefile.  
-Skompilowany program uruchamia sie nastepujacym poleceniem:  
+## Sposób uruchomienia
+Projekt kompiluje się poleceniem 'make', dzięki przygotowanemu pliku Makefile.  
+Skompilowany program uruchamia się nastepujacym poleceniem:  
 ```
 sudo ./game INTERFACE_NAME  
 ```
-Argument INTERFACE_NAME jest numerem uzywanego interfejsu sieciowego.
-Program wymaga uprawnien roota.
+Argument INTERFACE_NAME jest numerem używanego interfejsu sieciowego.
+Program wymaga uprawnień roota.
