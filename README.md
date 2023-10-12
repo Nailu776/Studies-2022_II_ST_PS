@@ -1,52 +1,68 @@
 # 2022_II_ST_PS    
-Repozytorium przeznaczone na przedmiot Programowanie Sieciowe (PS) na drugim stopniu studiów.
 
-## Opis projektu  
-Gra dla mobilnych bezprzewodowych sieci ad-hoc.  
-Gra Kółko i krzyżyk polegająca na turowym wysyłaniu między graczami planszy z wykonanym ruchem.  
-Po uruchomieniu gry następuje próba dołączenia do istniejącej rozgrywki,
-a po 10 sekundach od braku odpowiedzi startuje nowa rozgrywka i następuje oczekiwanie na drugiego gracza.  
-Gracze nie muszą znać swoich adresów, muszą jedynie znajdowac się w tej samej sieci, gdyż plansza jest wysyłana rozgłoszeniowo.  
-Po dołączeniu do rozgrywki, losowane są znaki, którymi będą posługiwac się gracze.  
-Znak X oznacza gracza pierwszego, który zawsze zaczyna rozgrywkę, a znak O gracza drugiego.  
+Repository for a project on Network programming (Programowanie sieciowe - PS)
 
-## Pliki źródłowe  
+## Authors
+Julian Helwig - https://julian.helwig.tech/#/ https://github.com/Nailu776
+
+Seweryn Kopeć - https://github.com/SewerynKopec
+
+## Project Description
+
+Game that works in any wireless mobile ad-hoc networks.
+
+A game of Tic-tac-toe. Two players send each other messages containing a board updated with their most recent move.
+
+At first the application scans for an existing game in the network. After 10 seconds of trying, the game is started anew and the player waits for a second player.
+
+The main feature of the game search is that it doesn't require an IP of any of the players. 
+
+When 2 players finally join the match. The game chooses who starts at random.
+
+X always starts first, O is always second.
+
+
+## Source files  
 
 *tictactoe*  
-Pliki tictactoe.* odpowiedzialne są za implementację zasad gry, wyświetlanie plansz oraz ruchy graczy.  
-Kompilacja:  
+Files that match ticatactoe.* implement the rules of the game as well as displaying the boards and making moves.  
+Compilation:  
 ```
 gcc -Wall ./game_confs/tictactoe.c -c -fcommon  
 ```  
 
 *receiver*  
-Pliki receiver.* zawierają ustawienia gniazda dotyczące odbierania ramek oraz interpretowania ich zawratości.  
-Kompilacja:  
+Files that match receiver.* contain socket settings that are responsible for receiveing frames and parsing their contents.
+Compilation:  
 ``` 
 gcc -Wall ./game_confs/receiver.c -c -fcommon  
 ```  
 
 *sender*  
-Pliki sender.* zawierają ustawienia gniazda dotyczące wysyłania ramek oraz budowania ich.  
-Kompilacja:  
+Files that match sender.* contain socket settings responsible for sending and constructing frames.
+Compilation:  
 ```
 gcc -Wall ./game_confs/sender.c -c -fcommon  
 ```  
 
 *game.c*  
-Plik game.c jest plikiem główym programu.  
-Inicjowane jest w nim gniazdo komunikacji, wybór roli graczy oraz pętle zdarzeń wejścia/wyjścia dla graczy.  
-Kompilacja:  
+File with a name game.c contains the main function.
+There, sockets, roles and I/O event loops are implemented
+Compilation:  
 ```
 gcc -Wall ./game.c -c -fcommon  
 gcc -Wall -o ./game ./game.o ./tictactoe.o ./receiver.o ./sender.o -fcommon  
 ```  
 
-## Sposób uruchomienia
-Projekt kompiluje się poleceniem 'make', dzięki przygotowanemu pliku Makefile.  
-Skompilowany program uruchamia się nastepujacym poleceniem:  
+## How to run
+The project compiles using the 'make' command. It runs all the commands contained in Makefile.
+
+A compiled program is run by the following command:
+
 ```
 sudo ./game INTERFACE_NAME  
 ```
-Argument INTERFACE_NAME jest nazwą używanego interfejsu sieciowego.  
-Program wymaga uprawnień administratora.
+INTERFACE_NAME is the name of the current network interface
+
+# Important!!!
+The program requires root privilages.
